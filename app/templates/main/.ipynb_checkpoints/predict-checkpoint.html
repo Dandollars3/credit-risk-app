@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header bg-primary text-white">
+        <h4>Credit Risk Assessment Form</h4>
+    </div>
+    <div class="card-body">
+        <form method="POST" action="/predict">
+            <!-- Numerical Features Section -->
+            <h5 class="mt-3">Numerical Information</h5>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <label class="form-label">Duration in Months</label>
+                    <input type="number" class="form-control" name="num__DurationInMonth" min="1" max="120" required>
+                    <small class="text-muted">Enter between 1 and 120 months</small>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Credit Amount ($)</label>
+                    <input type="number" class="form-control" name="num__CreditAmount" min="50" max="1000000" required>
+                    <small class="text-muted">$50 to $1,000,000</small>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Installment Rate (% of income)</label>
+                    <input type="number" class="form-control" name="num__InstallmentRate" min="1" max="100" required>
+                    <small class="text-muted">1% to 100%</small>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Years at Current Residence</label>
+                    <input type="number" class="form-control" name="num__PresentResidenceSince" min="0" max="100" required>
+                    <small class="text-muted">0 to 100 years</small>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Age (years)</label>
+                    <input type="number" class="form-control" name="num__AgeInYears" min="18" max="100" required>
+                    <small class="text-muted">18 to 100 years</small>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Number of Existing Credits</label>
+                    <input type="number" class="form-control" name="num__NumExistingCredits" min="0" max="10" required>
+                    <small class="text-muted">0 to 10 credits</small>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Number of People You Support</label>
+                    <input type="number" class="form-control" name="num__NumPeopleMaintenance" min="0" max="10" required>
+                    <small class="text-muted">0 to 10 people</small>
+                </div>
+            </div>
+
+            <!-- Categorical Features Section -->
+            <h5 class="mt-4">Account Information</h5>
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <label class="form-label">Checking Account Status</label>
+                    <select class="form-select" name="cat__Status_CheckingAccount" required>
+                        <option value="">Select option</option>
+                        <option value="0">No checking account</option>
+                        <option value="1">Less than $200</option>
+                        <option value="2">$200–$400</option>
+                        <option value="3">More than $400</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Savings Account</label>
+                    <select class="form-select" name="cat__SavingsAccount" required>
+                        <option value="">Select option</option>
+                        <option value="0">No savings account</option>
+                        <option value="1">Less than $100</option>
+                        <option value="2">$100–$500</option>
+                        <option value="3">$500–$1000</option>
+                        <option value="4">More than $1000</option>
+                    </select>
+                </div>
+            </div>
+
+            <h5 class="mt-4">Credit History</h5>
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <label class="form-label">Credit History</label>
+                    <select class="form-select" name="cat__CreditHistory" required>
+                        <option value="">Select option</option>
+                        <option value="0">No credits / all paid</option>
+                        <option value="1">All paid duly</option>
+                        <option value="2">Existing paid duly</option>
+                        <option value="3">Delay in past</option>
+                        <option value="4">Critical account</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Employment Duration</label>
+                    <select class="form-select" name="cat__EmploymentSince" required>
+                        <option value="">Select option</option>
+                        <option value="0">Unemployed</option>
+                        <option value="1">Less than 1 year</option>
+                        <option value="2">1–4 years</option>
+                        <option value="3">4–7 years</option>
+                        <option value="4">More than 7 years</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="mt-4 text-end">
+                <button type="submit" class="btn btn-primary">Assess Credit Risk</button>
+                <button type="reset" class="btn btn-outline-secondary ms-2">Reset Form</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

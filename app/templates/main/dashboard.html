@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+
+    <!-- Welcome Card -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">📊 Welcome to CreditRiskPro</h4>
+        </div>
+        <div class="card-body">
+            <p class="lead">This tool helps assess the credit risk of loan applicants using a machine learning model trained on financial and behavioral data.</p>
+        </div>
+    </div>
+
+    <!-- User Greeting -->
+    {% if current_user.is_authenticated %}
+    <div class="alert alert-info text-center">
+        👋 Welcome back, {{ current_user.username }}!
+    </div>
+    {% endif %}
+
+    <!-- Model Performance Cards -->
+    <div class="row g-4">
+        <div class="col-md-2">
+            <div class="card text-center card-metric bg-soft-green">
+                <div class="card-body">
+                    <h6 class="text-muted">Accuracy</h6>
+                    <h5>{{ metrics.test_accuracy | round(3) }}</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card text-center card-metric bg-soft-blue">
+                <div class="card-body">
+                    <h6 class="text-muted">Precision</h6>
+                    <h5>{{ metrics.precision | round(3) }}</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card text-center card-metric bg-soft-yellow">
+                <div class="card-body">
+                    <h6 class="text-muted">Recall</h6>
+                    <h5>{{ metrics.recall | round(3) }}</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card text-center card-metric bg-soft-red">
+                <div class="card-body">
+                    <h6 class="text-muted">F1 Score</h6>
+                    <h5>{{ metrics.f1_score | round(3) }}</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card text-center card-metric bg-soft-pink">
+                <div class="card-body">
+                    <h6 class="text-muted">ROC AUC</h6>
+                    <h5>{{ metrics.roc_auc | round(3) }}</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Model Info -->
+    <div class="text-muted small text-end mt-2">
+        Model: Tuned Random Forest (v1.0) — trained on 200 samples
+    </div>
+
+    <!-- Feature Importance Chart -->
+    <div class="card mt-5">
+        <div class="card-header bg-light">
+            <h5 class="mb-0">🔍 Top Influential Features</h5>
+        </div>
+        <div class="card-body">
+            <canvas id="featureChart" height="300"></canvas>
+        </div>
+    </div>
+
+    <!-- Confusion Matrix -->
+    {% if metrics.confusion_matrix %}
+    <div class="card mt-4">
+        <div class="card-header bg-light">
+            <h5 class="mb-0">🧮 Confusion Matrix</h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered text-center">
+                <thead class="table-light">
+                    <tr>
+                        <th></th>
+                        <th>Predicted: Low Risk</th>
+                        <th>Predicted: High Risk</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>Actual: Low Risk</th>
+                        <td>{{ metrics.confusion_matrix[0][0] }}</td>
+                        <td>{{ metrics.confusion_matrix[0][1] }}</td>
+                    </tr>
+                    <tr>
+                        <th>Actual: High Risk</th>
+                        <td>{{ metrics.confusion_matrix[1][0] }}</td>
+                        <td>{{ metrics.confusion_matrix[1][1] }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Call to Action -->
+    <div class="text-center mt-4">
+        <a href="/register" class="btn btn-lg btn-outline-primary me-3">Register to Get Started</a>
+        <a href="/predict" class="btn btn-lg btn-primary">Start New Assessment</a>
+    </div>
+</div>
+
+<!-- Chart.js Script -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('featureChart').getContext('2d');
+    const featureChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: [{% for row in top_features %}"{{ row.feature.replace('num__', '').replace('_log', '').replace('cat__', '').replace('_', ' ').title() }}"{% if not loop.last %}, {% endif %}{% endfor %}],
+            datasets: [{
+                label: 'Feature Importance',
+                data: [{% for row in top_features %}{{ row.importance | round(4) }}{% if not loop.last %}, {% endif %}{% endfor %}],
+                backgroundColor: ['#93B5C6', '#DDEDAA', '#F0CF65', '#D7816A', '#BD4F6C'],
+                borderColor: ['#93B5C6', '#DDEDAA', '#F0CF65', '#D7816A', '#BD4F6C'],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            scales: {
+                x: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+
+<!-- Custom Styles -->
+<style>
+    .bg-soft-blue { background-color: #93B5C6 !important; color: #fff; }
+    .bg-soft-green { background-color: #DDEDAA !important; color: #333; }
+    .bg-soft-yellow { background-color: #F0CF65 !important; color: #333; }
+    .bg-soft-red { background-color: #D7816A !important; color: #fff; }
+    .bg-soft-pink { background-color: #BD4F6C !important; color: #fff; }
+    .card-metric {
+        border: none;
+        border-radius: 0.5rem;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+</style>
+{% endblock %}
