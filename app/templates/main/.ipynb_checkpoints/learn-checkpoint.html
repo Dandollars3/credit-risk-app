@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">📚 Learn More About CreditRiskPro</h4>
+        </div>
+        <div class="card-body">
+            <p class="lead">This application is a capstone project developed during a 3-month course on Machine Learning Fundamentals with <strong>Incubator Hub</strong> and <strong>Data Science Academy (DSA)</strong>.</p>
+
+            <hr>
+
+            <h5>What You'll Learn Here</h5>
+            <ul>
+                <li>How credit risk is assessed using machine learning</li>
+                <li>What features influence creditworthiness</li>
+                <li>Tips to improve your credit score</li>
+                <li>How to interpret model metrics like precision, recall, and ROC AUC</li>
+            </ul>
+
+            <p class="mt-3">We believe in empowering users with knowledge — not just predictions. Explore the dashboard, understand your results, and take action to improve your financial profile.</p>
+        </div>
+    </div>
+
+    <!-- Creator Section -->
+    <div class="card shadow-sm">
+        <div class="card-header bg-dark text-white">
+            👨‍💻 Meet the Creator
+        </div>
+        <div class="card-body d-flex align-items-center">
+            <img src="{{ url_for('static', filename='images/creator.png') }}" alt="Daniel Salau" class="img-thumbnail me-4" style="max-width: 200px;">
+            <div>
+                <h5 class="mb-1">Daniel Salau</h5>
+                <p class="mb-0">Machine Learning Enthusiast | Data Science Academy Graduate | Passionate about building intelligent tools that solve real-world problems.</p>
+                <p class="mt-2">
+                    <a href="https://github.com/Dandollars3" target="_blank">GitHub</a> |
+                    <a href="https://www.linkedin.com/in/daniel-salau" target="_blank">LinkedIn</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

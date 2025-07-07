@@ -2,159 +2,148 @@
 {% block content %}
 <div class="container">
 
-    <!-- Welcome Card -->
-    <div class="card shadow-sm mb-4">
-        <div class="card-header bg-primary text-white">
-            <h4 class="mb-0">📊 Welcome to CreditRiskPro</h4>
-        </div>
+  <!-- Welcome Card -->
+  <div class="card shadow-sm mb-4">
+    <div class="card-header bg-primary text-white">
+      <h4 class="mb-0">📊 Welcome to CreditRiskPro</h4>
+    </div>
+    <div class="card-body">
+      <p class="lead">This tool helps assess the credit risk of loan applicants using a machine learning model trained on financial and behavioral data.</p>
+    </div>
+  </div>
+
+  <!-- User Greeting -->
+  {% if current_user.is_authenticated %}
+  <div class="alert alert-info text-center">
+    👋 Welcome back, {{ current_user.username }}!
+  </div>
+  {% endif %}
+
+  <!-- Model Performance Cards -->
+  <div class="row g-4">
+    {% for label, value, color in [
+      ('Accuracy', metrics.test_accuracy, 'green'),
+      ('Precision', metrics.precision, 'blue'),
+      ('Recall', metrics.recall, 'yellow'),
+      ('F1 Score', metrics.f1_score, 'red'),
+      ('ROC AUC', metrics.roc_auc, 'pink')
+    ] %}
+    <div class="col-md-2">
+      <div class="card text-center card-metric bg-soft-{{ color }}">
         <div class="card-body">
-            <p class="lead">This tool helps assess the credit risk of loan applicants using a machine learning model trained on financial and behavioral data.</p>
+          <h6 class="text-muted">{{ label }}</h6>
+          <h5>{{ value | round(3) }}</h5>
         </div>
+      </div>
     </div>
+    {% endfor %}
+  </div>
 
-    <!-- User Greeting -->
-    {% if current_user.is_authenticated %}
-    <div class="alert alert-info text-center">
-        👋 Welcome back, {{ current_user.username }}!
-    </div>
-    {% endif %}
+  <div class="text-muted small text-end mt-2">
+    Model: Tuned Random Forest (v1.0) — trained on 200 samples
+  </div>
 
-    <!-- Model Performance Cards -->
-    <div class="row g-4">
-        <div class="col-md-2">
-            <div class="card text-center card-metric bg-soft-green">
-                <div class="card-body">
-                    <h6 class="text-muted">Accuracy</h6>
-                    <h5>{{ metrics.test_accuracy | round(3) }}</h5>
-                </div>
-            </div>
+  <!-- Credit Risk Insights Carousel -->
+  <div id="creditRiskCarousel" class="carousel slide mt-5 shadow-sm" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="https://cdn.educba.com/academy/wp-content/uploads/2021/02/Credit-Risk-Management.jpg" class="d-block w-100 rounded" alt="Systematic Risk Process">
+        <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded p-3">
+          <h5>Build a Risk Strategy</h5>
+          <p>Use structured frameworks to identify, measure, and control credit exposure.</p>
         </div>
-        <div class="col-md-2">
-            <div class="card text-center card-metric bg-soft-blue">
-                <div class="card-body">
-                    <h6 class="text-muted">Precision</h6>
-                    <h5>{{ metrics.precision | round(3) }}</h5>
-                </div>
-            </div>
+      </div>
+      <div class="carousel-item">
+        <img src="https://www.collidu.com/media/catalog/product/img/c/c/ccac53d46af8d775c0aebd58ab06464dac0a7f3ad4797e03185f56a1ab973660/credit-risk-management-slide2.png" class="d-block w-100 rounded" alt="Credit Risk Framework">
+        <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded p-3">
+          <h5>Visualize Risk Exposure</h5>
+          <p>Dashboards help you track high-risk accounts and make informed decisions.</p>
         </div>
-        <div class="col-md-2">
-            <div class="card text-center card-metric bg-soft-yellow">
-                <div class="card-body">
-                    <h6 class="text-muted">Recall</h6>
-                    <h5>{{ metrics.recall | round(3) }}</h5>
-                </div>
-            </div>
+      </div>
+      <div class="carousel-item">
+        <img src="https://www.collidu.com/media/catalog/product/img/9/b/9b649b8b45113b2a1124bd35778b99168013ff3a49826eb2f98ff20fc783aca9/credit-risk-management-slide5.png" class="d-block w-100 rounded" alt="Strategic Risk Control">
+        <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded p-3">
+          <h5>Strategic Risk Control</h5>
+          <p>Visual frameworks help institutions align credit policies with real-time risk exposure.</p>
         </div>
-        <div class="col-md-2">
-            <div class="card text-center card-metric bg-soft-red">
-                <div class="card-body">
-                    <h6 class="text-muted">F1 Score</h6>
-                    <h5>{{ metrics.f1_score | round(3) }}</h5>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-2">
-            <div class="card text-center card-metric bg-soft-pink">
-                <div class="card-body">
-                    <h6 class="text-muted">ROC AUC</h6>
-                    <h5>{{ metrics.roc_auc | round(3) }}</h5>
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#creditRiskCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#creditRiskCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
 
-    <!-- Model Info -->
-    <div class="text-muted small text-end mt-2">
-        Model: Tuned Random Forest (v1.0) — trained on 200 samples
+  <!-- Credit Advice Section -->
+  <div class="card mt-5">
+    <div class="card-header bg-info text-white">
+      💡 How to Become More Creditworthy
     </div>
+    <div class="card-body">
+      <ul>
+        <li>Pay bills on time — your payment history matters most.</li>
+        <li>Keep credit utilization below 30% of your limit.</li>
+        <li>Maintain a healthy mix of credit types (cards, loans, etc.).</li>
+        <li>Limit hard inquiries — too many can hurt your score.</li>
+        <li>Check your credit report regularly for errors.</li>
+      </ul>
+    </div>
+  </div>
 
-    <!-- Feature Importance Chart -->
-    <div class="card mt-5">
-        <div class="card-header bg-light">
-            <h5 class="mb-0">🔍 Top Influential Features</h5>
-        </div>
-        <div class="card-body">
-            <canvas id="featureChart" height="300"></canvas>
-        </div>
+  <!-- Confusion Matrix -->
+  {% if metrics.confusion_matrix %}
+  <div class="card mt-5">
+    <div class="card-header bg-light">
+      <h5 class="mb-0">🧮 Confusion Matrix</h5>
     </div>
+    <div class="card-body">
+      <table class="table table-bordered text-center">
+        <thead class="table-light">
+          <tr>
+            <th></th>
+            <th>Predicted: Low Risk</th>
+            <th>Predicted: High Risk</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>Actual: Low Risk</th>
+            <td>{{ metrics.confusion_matrix[0][0] }}</td>
+            <td>{{ metrics.confusion_matrix[0][1] }}</td>
+          </tr>
+          <tr>
+            <th>Actual: High Risk</th>
+            <td>{{ metrics.confusion_matrix[1][0] }}</td>
+            <td>{{ metrics.confusion_matrix[1][1] }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% endif %}
 
-    <!-- Confusion Matrix -->
-    {% if metrics.confusion_matrix %}
-    <div class="card mt-4">
-        <div class="card-header bg-light">
-            <h5 class="mb-0">🧮 Confusion Matrix</h5>
-        </div>
-        <div class="card-body">
-            <table class="table table-bordered text-center">
-                <thead class="table-light">
-                    <tr>
-                        <th></th>
-                        <th>Predicted: Low Risk</th>
-                        <th>Predicted: High Risk</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th>Actual: Low Risk</th>
-                        <td>{{ metrics.confusion_matrix[0][0] }}</td>
-                        <td>{{ metrics.confusion_matrix[0][1] }}</td>
-                    </tr>
-                    <tr>
-                        <th>Actual: High Risk</th>
-                        <td>{{ metrics.confusion_matrix[1][0] }}</td>
-                        <td>{{ metrics.confusion_matrix[1][1] }}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-    {% endif %}
-
-    <!-- Call to Action -->
-    <div class="text-center mt-4">
-        <a href="/register" class="btn btn-lg btn-outline-primary me-3">Register to Get Started</a>
-        <a href="/predict" class="btn btn-lg btn-primary">Start New Assessment</a>
-    </div>
+  <!-- Call to Action -->
+  <div class="text-center mt-4">
+    <a href="/register" class="btn btn-lg btn-outline-primary me-3">Register to Get Started</a>
+    <a href="/predict" class="btn btn-lg btn-primary">Start New Assessment</a>
+  </div>
 </div>
-
-<!-- Chart.js Script -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    const ctx = document.getElementById('featureChart').getContext('2d');
-    const featureChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: [{% for row in top_features %}"{{ row.feature.replace('num__', '').replace('_log', '').replace('cat__', '').replace('_', ' ').title() }}"{% if not loop.last %}, {% endif %}{% endfor %}],
-            datasets: [{
-                label: 'Feature Importance',
-                data: [{% for row in top_features %}{{ row.importance | round(4) }}{% if not loop.last %}, {% endif %}{% endfor %}],
-                backgroundColor: ['#93B5C6', '#DDEDAA', '#F0CF65', '#D7816A', '#BD4F6C'],
-                borderColor: ['#93B5C6', '#DDEDAA', '#F0CF65', '#D7816A', '#BD4F6C'],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            indexAxis: 'y',
-            scales: {
-                x: {
-                    beginAtZero: true
-                }
-            }
-        }
-    });
-</script>
 
 <!-- Custom Styles -->
 <style>
-    .bg-soft-blue { background-color: #93B5C6 !important; color: #fff; }
-    .bg-soft-green { background-color: #DDEDAA !important; color: #333; }
-    .bg-soft-yellow { background-color: #F0CF65 !important; color: #333; }
-    .bg-soft-red { background-color: #D7816A !important; color: #fff; }
-    .bg-soft-pink { background-color: #BD4F6C !important; color: #fff; }
-    .card-metric {
-        border: none;
-        border-radius: 0.5rem;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
+  .bg-soft-blue { background-color: #93B5C6 !important; color: #fff; }
+  .bg-soft-green { background-color: #DDEDAA !important; color: #333; }
+  .bg-soft-yellow { background-color: #F0CF65 !important; color: #333; }
+  .bg-soft-red { background-color: #D7816A !important; color: #fff; }
+  .bg-soft-pink { background-color: #BD4F6C !important; color: #fff; }
+  .card-metric {
+    border: none;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  }
 </style>
 {% endblock %}

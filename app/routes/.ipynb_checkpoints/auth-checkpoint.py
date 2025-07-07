@@ -41,7 +41,7 @@ def login():
 
         login_user(user)
         flash('Logged in successfully.', 'success')
-        return redirect(url_for('main.home'))
+        return redirect(url_for('main.dashboard'))
 
     return render_template('auth/login.html')
 
